@@ -1,0 +1,34 @@
+{
+  "name": "secuweb-did-vc-anchoring-demo",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rm -rf dist cache artifacts",
+    "hardhat": "hardhat",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "register": "hardhat run scripts/registerDid.ts --network localhost",
+    "update": "hardhat run scripts/updateDid.ts --network localhost",
+    "anchor": "hardhat run scripts/anchorVc.ts --network localhost",
+    "resolve": "hardhat run scripts/resolveDid.ts --network localhost",
+    "check:did": "hardhat run scripts/resolveAndCheckDid.ts --network localhost",
+    "verify:vc": "hardhat run scripts/verifyVc.ts --network localhost",
+    "redeploy": "hardhat run scripts/deploy.ts --network localhost && echo '⮕ wrote cache/contract.json'",
+    "explore": "hardhat run scripts/exploreChain.ts --network localhost",
+    "server": "hardhat run src/server.ts --network localhost",
+    "server:dev": "nodemon -w . --exec npm run server"
+  },
+  "dependencies": {
+    "ethers": "^6.13.2",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@types/node": "^20.14.10",
+    "hardhat": "^2.22.11",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
