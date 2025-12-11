@@ -9,6 +9,7 @@
     "node": "hardhat node",
     "deploy": "hardhat run scripts/deploy.ts --network localhost",
     "register": "hardhat run scripts/registerDid.ts --network localhost",
+    "setup": "npm run deploy && npm run register",
     "update": "hardhat run scripts/updateDid.ts --network localhost",
     "anchor": "hardhat run scripts/anchorVc.ts --network localhost",
     "resolve": "hardhat run scripts/resolveDid.ts --network localhost",
