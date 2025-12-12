@@ -20,7 +20,7 @@ Main components:
 - Hardhat node.
 - Smart contract for registering DIDs and anchoring VCs. See the [smart contract](./doc/smart-contract.md) documentation for more details.
 - Scripts for interacting with the Hardhat node. See the [scripts](./doc/scripts.md) documentation for more details.
-- Verifier Web-service providing REST API for verifying an anchored VC. See the [verifier](./doc/verifier-service.md.md) documentation for more details.
+- Verifier Web-service providing REST API for verifying an anchored VC. See the [verifier](./doc/verifier-service.md) documentation for more details.
 
 ![Overview](./doc/diagrams/overview-hl.mermaid.png)
 
