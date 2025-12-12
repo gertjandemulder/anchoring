@@ -22,6 +22,8 @@ Main components:
 - Scripts for interacting with the Hardhat node. See the [scripts](./doc/scripts.md) documentation for more details.
 - Verifier Web-service providing REST API for verifying an anchored VC. See the [verifier](./doc/verifier-service.md.md) documentation for more details.
 
+![Overview](./doc/diagrams/overview.mermaid.png)
+
 ## Quick start
 
 ```bash
