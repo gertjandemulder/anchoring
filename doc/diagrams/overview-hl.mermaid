@@ -1,0 +1,21 @@
+graph LR
+  external@{ shape: sm-circ, label: "Small start" }
+
+  subgraph anchoring["Repository: Anchoring"]
+    
+    subgraph cs["Chain Service (Port: 4000)"]
+        endpoint_verify["[POST] /verify"]
+    end
+    subgraph hh["Hardhat environment"]
+        hh_node("Hardhat node")
+        rpc_endpoint("RPC Endpoint <br>Port: 8545")
+        sc@{ shape: notch-rect, label: "Smart Contract" }
+        hh_node -.- rpc_endpoint
+        hh_node -.- sc
+    end
+  end
+external --body: {verifiableCredential}--> endpoint_verify
+endpoint_verify --> rpc_endpoint
+%%1 --GetAnchoredHash(VC)--> rpc_endpoint
+%%rpc_endpoint --<i>hash</i>--> 1
+  
