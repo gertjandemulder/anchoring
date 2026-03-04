@@ -38,6 +38,7 @@ npx hardhat node            # start Hardhat network
 #################################################
 npm run deploy             # writes cache/contract.json with address
 npm run server             # starts the verifier service
+# browse http://localhost:4444/explorer for the block explorer
 ```
 
 > [!NOTE]
@@ -52,6 +53,8 @@ npm run resolve            # resolve anchored example DID
 npm run check:did          # check and verify example anchored DID
 npm run verify:vc          # verify anchored example VC
 npm run explore            # create an overview of on-chain data and transactions
+# GET /explorer           # browser-based block explorer
+# GET /explorer/data      # JSON snapshot used by the explorer UI
 ```
 
 ## License

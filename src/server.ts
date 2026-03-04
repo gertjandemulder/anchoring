@@ -3,7 +3,9 @@ import express, {Express} from 'express';
 import bodyParser from "body-parser";
 import cors from 'cors';
 import { config } from './config'
+import { Explorer } from './controllers/explorer';
 import { Verifier } from './controllers/verifier';
+import { renderExplorerPage } from './views/explorer';
 
 const app: Express = express();
 app.use(cors(config.cors))
@@ -31,8 +33,22 @@ app.post('/verify', async (req,res)=>{
     }
 })
 
+app.get('/explorer', (_req, res) => {
+    res.type('html').send(renderExplorerPage());
+})
+
+app.get('/explorer/data', async (_req, res) => {
+    try {
+        const explorer = new Explorer();
+        const overview = await explorer.getOverview();
+        res.send(overview);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        res.status(500).send({ error: message });
+    }
+})
+
 
 app.listen(config.port, () => {
     console.log(`⚡️[${config.name}]: Server is running at http://localhost:${config.port}`);
 })
-
