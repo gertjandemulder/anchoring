@@ -8,7 +8,7 @@ export class Verifier {
     contractAddr: string;
     
     constructor() {
-        const rpc = "http://127.0.0.1:8545";
+        const rpc = process.env.RPC_URL || "http://127.0.0.1:8545";
         this.contractAddr = getContractAddr();
         this.provider = new ethers.JsonRpcProvider(rpc);
         this.registry = new ethers.Contract(this.contractAddr, (artifact as any).abi, this.provider);
@@ -26,19 +26,28 @@ export class Verifier {
         const exists = anchor && anchor.timestamp && Number(anchor.timestamp) > 0;
         const subjectMatch = exists && anchor.subjectDid === expectedSubjectDid;
 
+        // The recorded issuer must be the on-chain controller of the anchored issuerDid.
+        let issuerVerified = false;
+        if (exists) {
+            const controller = await (this.registry as any).controllerOf(anchor.issuerDid);
+            issuerVerified = controller.toLowerCase() === anchor.issuer.toLowerCase();
+        }
+
         const result = {
             contract: this.contractAddr,
             subjectExpected: expectedSubjectDid,
             vcHash,
             anchor: exists ? {
             subjectDid: anchor.subjectDid,
+            issuerDid: anchor.issuerDid,
             issuer: anchor.issuer,
             vcHash: anchor.vcHash,
             metadataURI: anchor.metadataURI,
             timestamp: Number(anchor.timestamp)
             } : null,
             anchored: !!exists,
-            subjectMatches: !!subjectMatch
+            subjectMatches: !!subjectMatch,
+            issuerVerified
         };
         console.log('result: ', result)
         return result;
