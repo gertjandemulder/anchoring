@@ -10,6 +10,7 @@ contract DIDRegistry {
 
     struct VCAnchor {
         string subjectDid;
+        string issuerDid;
         address issuer;
         bytes32 vcHash;
         string metadataURI;
@@ -61,16 +62,29 @@ contract DIDRegistry {
         return (rec.controller, rec.docHash, rec.active);
     }
 
-    function anchorCredential(string calldata subjectDid, bytes32 vcHash, string calldata metadataURI) external {
+    function controllerOf(string calldata did) external view returns (address) {
+        return dids[_didKey(did)].controller;
+    }
+
+    function anchorCredential(
+        string calldata subjectDid,
+        string calldata issuerDid,
+        bytes32 vcHash,
+        string calldata metadataURI
+    ) external {
         require(vcAnchors[vcHash].timestamp == 0, "VC exists");
-        VCAnchor memory a = VCAnchor({
+        DIDRecord storage issuerRec = dids[_didKey(issuerDid)];
+        require(issuerRec.controller != address(0), "issuer DID not registered");
+        require(issuerRec.active, "issuer DID inactive");
+        require(issuerRec.controller == msg.sender, "signer not issuer controller");
+        vcAnchors[vcHash] = VCAnchor({
             subjectDid: subjectDid,
+            issuerDid: issuerDid,
             issuer: msg.sender,
             vcHash: vcHash,
             metadataURI: metadataURI,
             timestamp: block.timestamp
         });
-        vcAnchors[vcHash] = a;
         subjectToVCs[_didKey(subjectDid)].push(vcHash);
         emit VCAnchored(subjectDid, msg.sender, vcHash, metadataURI);
     }

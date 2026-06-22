@@ -361,6 +361,7 @@ export function renderExplorerPage(): string {
           [
             { key: "block", label: "Block" },
             { key: "subjectDid", label: "Subject" },
+            { key: "issuerDid", label: "Issuer DID" },
             { key: "issuer", label: "Issuer", className: "mono" },
             { key: "vcHash", label: "VC Hash", className: "mono" },
             { key: "metadataURI", label: "Metadata URI" }

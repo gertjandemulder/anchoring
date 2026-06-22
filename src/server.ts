@@ -21,10 +21,10 @@ app.post('/verify', async (req,res)=>{
     try {
         const verifier = new Verifier();
         const vr = await verifier.verifyVc(verifiableCredential)
-        const {subjectMatches, anchored, anchor } = vr
+        const {subjectMatches, anchored, issuerVerified, anchor } = vr
 
         const chainVerificationResult = {
-            verified: subjectMatches && anchored,
+            verified: subjectMatches && anchored && issuerVerified,
             anchor
         }
         res.send(chainVerificationResult);

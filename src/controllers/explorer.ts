@@ -32,6 +32,7 @@ type AnchorRow = {
   block: number;
   tx: string;
   subjectDid: string;
+  issuerDid: string;
   issuer: string;
   vcHash: string;
   metadataURI: string;
@@ -113,14 +114,22 @@ export class Explorer {
       }),
     );
 
-    const vcAnchors = vcAnchored.map((event) => ({
-      block: event.blockNumber,
-      tx: event.transactionHash,
-      subjectDid: String(event.args[0]),
-      issuer: String(event.args[1]),
-      vcHash: String(event.args[2]),
-      metadataURI: String(event.args[3]),
-    }));
+    // VCAnchored events do not carry issuerDid; read it from the vcAnchors mapping.
+    const vcAnchors = await Promise.all(
+      vcAnchored.map(async (event) => {
+        const vcHash = String(event.args[2]);
+        const stored = await (this.registry as any).vcAnchors(vcHash);
+        return {
+          block: event.blockNumber,
+          tx: event.transactionHash,
+          subjectDid: String(event.args[0]),
+          issuerDid: String(stored.issuerDid),
+          issuer: String(event.args[1]),
+          vcHash,
+          metadataURI: String(event.args[3]),
+        };
+      }),
+    );
 
     const subjectIndex = new Map<string, string[]>();
     for (const anchor of vcAnchors) {
